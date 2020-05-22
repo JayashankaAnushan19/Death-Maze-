@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Game</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="1350" height="380"></canvas><br>
+    <img id="agentA" src="A.png" alt="" width="20" height="20" style="display: none;">
+    <img id="agentB" src="B.png" alt="" width="20" height="20" style="display: none;">
+    <img id="agentC" src="C.png" alt="" width="20" height="20" style="display: none;">
+    <img id="agentD" src="D.png" alt="" width="20" height="20" style="display: none;">
+    <img id="wallImg" src="Wall.png" alt="" width="20" height="20" style="display: none;">
+    <img id="boardImg" src="Board.png" alt="" width="20" height="20" style="display: none;">
+    <img id="gateImg" src="Gate.png" alt="" width="20" height="20" style="display: none;">
+
+    <div style="text-align:center;width:480px;">
+        <button onclick="moveUp()">Up</button><br><br>
+        <button onclick="moveLeft()">Left</button>
+        <button onclick="moveRight()">Right</button><br><br>
+        <button onclick="moveDown()">Down</button><br><br>
+      </div>
+
+    <script>
+        var canvas;
+        var ctx;
+        
+        
+
+        // Height and Weight of the Canvas
+        var HEIGHT = 380;
+        var WIDTH = 1400;
+
+        // Tile height and weight
+        tileH = 29;
+        tileW = 29;
+
+        // No of rows in this canvas and No of columns in this canvas.
+        tileRowCount = 13; 
+        tileColumnCount = 46; 
+
+
+        // Make a array to import tiles and in this there are some arrays too.
+        // one row array have a all of columns and this kind of rao arrys have 'tile Row Count'
+        // Here is the code for that
+        var tiles = [];
+        for (c = 0; c < tileColumnCount; c++) {
+            tiles[c]=[];
+            for (r = 0; r < tileRowCount; r++) {
+                tiles[c][r]={x: c*(tileW+0.01), y:r*(tileH+0.01), state:'e'}; //state for e is empty
+            }
+        }
+
+        // Borders - Start.
+        for(var g = 0; g < tileColumnCount; g++){
+            tiles[g][0].state='b';
+            tiles[g][tileRowCount-1].state='b';
+        }
+        for(var j = 0; j < tileRowCount;j++){
+            tiles[0][j].state='b';
+            tiles[tileColumnCount-1][j].state='b';
+            wallFillManually();
+            agentsResetStaus();  // Agent's starting places         
+        }
+        // Borders - Start
+
+        function agentsResetStaus() {
+            tiles[tileColumnCount-3][6].state='t'; // Agent A
+            tiles[22][6].state='x'; // Agent B
+            tiles[17][1].state='Ac'; // Agent C
+            tiles[17][11].state='Ad'; // Agent D
+        }
+        
+        function doorLockFirstLevel() { //First Level Door Locks
+            tiles[tileColumnCount-5][4].state='g';
+            tiles[tileColumnCount-5][8].state='g';
+        }
+
+        function doorLockFirstLeve2() { //First Level Door Locks
+            tiles[24][5].state='g';
+            tiles[24][7].state='g';
+        }
+
+        function doorLockFirstLeve3() { //First Level Door Locks
+            tiles[4][4].state='g';
+            tiles[4][7].state='g';
+        }
+
+        function wallFillManually(){
+            tiles[1][1].state='w';
+tiles[1][2].state='w';
+tiles[1][5].state='w';
+tiles[1][6].state='w';
+tiles[1][7].state='w';
+tiles[1][10].state='w';
+tiles[1][11].state='w';
+
+tiles[3][1].state='w';
+tiles[3][2].state='w';
+tiles[3][3].state='w';
+// tiles[3][6].state='w';
+tiles[3][8].state='w';
+tiles[3][9].state='w';
+tiles[3][10].state='w';
+tiles[3][11].state='w';
+
+tiles[4][1].state='w';
+tiles[4][2].state='w';
+tiles[4][3].state='w';
+tiles[4][5].state='w'; 
+tiles[4][6].state='w';
+tiles[4][8].state='w';
+tiles[4][9].state='w';
+tiles[4][11].state='w';
+
+tiles[5][1].state='w';
+tiles[5][5].state='w';
+tiles[5][6].state='w';
+tiles[5][11].state='w';
+
+tiles[6][3].state='w';
+tiles[6][8].state='w';
+tiles[6][9].state='w';
+tiles[6][11].state='w';
+
+tiles[7][2].state='w';
+tiles[7][3].state='w';
+tiles[7][5].state='w';
+tiles[7][6].state='w';
+tiles[7][11].state='w';
+
+tiles[8][8].state='w';
+
+tiles[9][1].state='w';
+tiles[9][2].state='w';
+tiles[9][4].state='w';
+tiles[9][5].state='w';
+tiles[9][7].state='w';
+tiles[9][8].state='w';
+tiles[9][10].state='w';
+tiles[9][11].state='w';
+
+tiles[10][1].state='w';
+tiles[10][5].state='w';
+tiles[10][7].state='w';
+tiles[10][8].state='w';
+
+tiles[11][3].state='w';
+tiles[11][10].state='w';
+tiles[11][11].state='w';
+
+tiles[12][1].state='w';
+tiles[12][5].state='w';
+tiles[12][6].state='w';
+tiles[12][8].state='w';
+tiles[12][11].state='w';
+
+tiles[13][1].state='w';
+tiles[13][3].state='w';
+tiles[13][5].state='w';
+tiles[13][8].state='w';
+tiles[13][9].state='w';
+tiles[13][11].state='w';
+
+tiles[15][1].state='w';
+tiles[15][2].state='w';
+tiles[15][3].state='w';
+tiles[15][5].state='w';
+tiles[15][7].state='w';
+tiles[15][9].state='w';
+tiles[15][10].state='w';
+tiles[15][11].state='w';
+
+tiles[16][3].state='w';
+tiles[16][5].state='w';
+tiles[16][9].state='w';
+
+tiles[17][3].state='w';
+tiles[17][7].state='w';
+tiles[17][9].state='w';
+
+tiles[18][3].state='w';
+tiles[18][5].state='w';
+tiles[18][9].state='w';
+
+tiles[19][1].state='w';
+tiles[19][2].state='w';
+tiles[19][3].state='w';
+tiles[19][5].state='w';
+tiles[19][7].state='w';
+tiles[19][9].state='w';
+tiles[19][10].state='w';
+tiles[19][11].state='w';
+
+tiles[22][1].state='w';
+tiles[22][2].state='w';
+tiles[22][3].state='w';
+tiles[22][4].state='w';
+tiles[22][8].state='w';
+tiles[22][9].state='w';
+tiles[22][10].state='w';
+tiles[22][11].state='w';
+
+tiles[23][2].state='w';
+tiles[23][4].state='w';
+tiles[23][6].state='w';
+tiles[23][8].state='w';
+
+tiles[24][4].state='w';
+tiles[24][6].state='w';
+tiles[24][8].state='w';
+tiles[24][10].state='w';
+
+tiles[25][2].state='w';
+
+tiles[26][2].state='w';
+tiles[26][3].state='w';
+tiles[26][5].state='w';
+tiles[26][6].state='w';
+tiles[26][8].state='w';
+tiles[26][9].state='w';
+tiles[26][10].state='w';
+
+tiles[27][6].state='w';
+tiles[27][8].state='w';
+
+tiles[28][1].state='w';
+tiles[28][4].state='w';
+tiles[28][10].state='w';
+tiles[28][11].state='w';
+
+tiles[29][1].state='w';
+tiles[29][2].state='w';
+tiles[29][4].state='w';
+tiles[29][5].state='w';
+tiles[29][7].state='w';
+tiles[29][8].state='w';
+
+tiles[30][1].state='w';
+tiles[30][8].state='w';
+tiles[30][10].state='w';
+tiles[30][11].state='w';
+
+tiles[31][3].state='w';
+tiles[31][4].state='w';
+tiles[31][6].state='w';
+tiles[31][8].state='w';
+tiles[31][11].state='w';
+
+tiles[32][1].state='w';
+tiles[32][6].state='w';
+
+tiles[33][3].state='w';
+tiles[33][5].state='w';
+tiles[33][6].state='w';
+tiles[33][7].state='w';
+tiles[33][9].state='w';
+tiles[33][11].state='w';
+
+tiles[34][2].state='w';
+tiles[34][3].state='w';
+tiles[34][7].state='w';
+tiles[34][9].state='w';
+
+tiles[35][5].state='w';
+
+tiles[36][1].state='w';
+tiles[36][3].state='w';
+tiles[36][5].state='w';
+tiles[36][7].state='w';
+tiles[36][8].state='w';
+tiles[36][10].state='w';
+tiles[36][11].state='w';
+
+tiles[37][1].state='w';
+tiles[37][3].state='w';
+
+tiles[38][5].state='w';
+tiles[38][6].state='w';
+tiles[38][9].state='w';
+tiles[38][10].state='w';
+
+tiles[39][2].state='w';
+tiles[39][5].state='w';
+tiles[39][6].state='w';
+tiles[39][8].state='w';
+tiles[39][9].state='w';
+tiles[39][10].state='w';
+
+tiles[40][1].state='w';
+tiles[40][2].state='w';
+tiles[40][3].state='w';
+tiles[40][10].state='w';
+tiles[40][11].state='w';
+
+tiles[41][1].state='w';
+tiles[41][2].state='w';
+tiles[41][3].state='w';
+tiles[41][5].state='w';
+tiles[41][6].state='w';
+tiles[41][7].state='w';
+tiles[41][9].state='w';
+tiles[41][10].state='w';
+tiles[41][11].state='w';
+
+tiles[43][1].state='w';
+tiles[43][11].state='w';
+
+tiles[44][1].state='w';
+tiles[44][2].state='w';
+tiles[44][5].state='w';
+tiles[44][6].state='w';
+tiles[44][7].state='w';
+tiles[44][10].state='w';
+tiles[44][11].state='w';
+}
+
+        function rect(x,y,w,h,state) {
+
+            var imgA = document.getElementById("agentA");
+            var patA = ctx.createPattern(imgA, "repeat");
+
+            var imgB = document.getElementById("agentB");
+            var patB = ctx.createPattern(imgB, "repeat");
+
+            var imgC = document.getElementById("agentC");
+            var patC = ctx.createPattern(imgC, "repeat");
+
+            var imgD = document.getElementById("agentD");
+            var patD = ctx.createPattern(imgD, "repeat");
+
+            var imgW = document.getElementById("wallImg");
+            var patW = ctx.createPattern(imgW, "repeat");
+
+            var imgBoardImg = document.getElementById("boardImg");
+            var patBoardImg = ctx.createPattern(imgBoardImg, "repeat");
+
+            var imgGateImg = document.getElementById("gateImg");
+            var patGateImg = ctx.createPattern(imgGateImg, "repeat");
+
+
+            //red red green green blue blue
+
+            if (state =='b') { // Boarder
+                // ctx.fillStyle = '#000000';  
+                ctx.fillStyle = patBoardImg;            
+            }
+            else if (state =='t') { // Agent A
+                // ctx.fillStyle = 'Blue';    //    immg       
+                ctx.fillStyle = patA;
+            }  
+            else if(state == 'e'){ // Empty road
+                ctx.fillStyle = '#aaaaaa';   
+            }
+            else if(state == 'w'){ // Walls
+                // ctx.fillStyle = '#D2691E';   
+                ctx.fillStyle = patW;
+            }
+            else if(state == 'x'){ // Agent B
+                // ctx.fillStyle = 'Green';
+                ctx.fillStyle = patB;
+            }
+            else if(state == 'Ac'){ // Agent c
+                // ctx.fillStyle = 'Red';
+                ctx.fillStyle = patC;
+            }
+            else if(state == 'Ad'){ // Agent D
+                // ctx.fillStyle = 'Black';
+                ctx.fillStyle = patD;
+            }
+            else if(state == 'g'){ // Gates Activate
+                ctx.fillStyle = 'yellow';
+            }
+            else{
+                ctx.fillStyle = '#aaaaaa';   // **Extra coloring part but not use
+            }
+
+            ctx.beginPath();
+            ctx.rect(x,y,w,h);
+            ctx.closePath();
+            ctx.fill();
+            setTimeout(rect, 100); // check again in a second/10  
+        }
+
+        // This function Clear the canvas from 0,0 to End tile
+        function clear() {
+            ctx.clearRect(0,0,WIDTH, HEIGHT);
+        }
+
+        // Draw tiles in whole canvas
+        function draw() {
+            clear();
+            for (c=0; c < tileColumnCount ; c++){
+                for (r=0; r < tileRowCount; r++){
+                    rect(tiles[c][r].x, tiles[c][r].y, tileW, tileH, tiles[c][r].state);
+                }
+            }
+            
+        }
+
+        function reset(){
+            for (c = 0; c < tileColumnCount; c++) {
+            tiles[c]=[];
+            for (r = 0; r < tileRowCount; r++) {
+                tiles[c][r]={x: c*(tileW+0.01), y:r*(tileH+0.01), state:'e'}; //state for e is empty
+            }
+        }
+
+        // According to above array
+        // tile[0][0] is the First tile and tile[0][0] is the place of first tile 
+        tiles[0][0].state = 's'; // is First tile state
+        tiles[tileColumnCount-1][tileRowCount-1].state = 'f'; //Last tile state
+
+        }
+
+        function checkerPot() {
+            for (c=0; c < tileColumnCount ; c++){
+                for (r=0; r < tileRowCount; r++){
+                    if(tiles[c][r].state=='t'){
+                        console.log("Agent A x=",c," ","Y=",r);
+                        return[c,r];
+                    }
+                }
+            
+            }
+        }
+
+        function checkerPoB() {
+            for (c=0; c < tileColumnCount ; c++){
+                for (r=0; r < tileRowCount; r++){
+                    if(tiles[c][r].state=='x'){
+                        console.log("Agent B x=",c," ","Y=",r);
+                        return[c,r];
+                    }
+                }
+            
+            }
+        }
+
+
+        function init()
+        {
+            canvas = document.getElementById("myCanvas");
+            ctx = canvas.getContext("2d");
+            return setInterval (draw, 10);  
+                     
+        }
+
+        function moveUp() {
+            cord = this.checkerPot();
+            i = cord[0]
+            j = cord[1]
+            if (tiles[i][j-1].state == 'e')
+            {
+                tiles[i][j].state='e';
+                tiles[i][j-1].state ='t';
+            }
+        }
+        function moveDown() {
+            cord = this.checkerPot();
+            i = cord[0]
+            j = cord[1]
+            if (tiles[i][j+1].state == 'e')
+            {
+                tiles[i][j].state='e';
+                tiles[i][j+1].state ='t';
+            }
+        }
+        function moveLeft() {
+            cord = this.checkerPot();
+            i = cord[0]
+            j = cord[1]
+            if (tiles[i-1][j].state == 'e')
+            {
+                tiles[i][j].state='e';
+                tiles[i-1][j].state ='t';
+            }
+        }
+        function moveRight() {
+            cord = this.checkerPot();
+            i = cord[0]
+            j = cord[1]
+            if (tiles[i+1][j].state == 'e')
+            {
+                tiles[i][j].state='e';
+                tiles[i+1][j].state ='t';
+            }
+        }
+        init();
+        
+    </script>
+    
+</body>
+</html>
