@@ -72,17 +72,17 @@
             tiles[17][11].state='Ad'; // Agent D
         }
         
-        function doorLockFirstLevel() { //First Level Door Locks
+        function doorLockFirstLevel1() { //First Level Door Locks
             tiles[tileColumnCount-5][4].state='g';
             tiles[tileColumnCount-5][8].state='g';
         }
 
-        function doorLockFirstLeve2() { //First Level Door Locks
+        function doorLockFirstLevel2() { //First Level Door Locks
             tiles[24][5].state='g';
             tiles[24][7].state='g';
         }
 
-        function doorLockFirstLeve3() { //First Level Door Locks
+        function doorLockFirstLevel3() { //First Level Door Locks
             tiles[4][4].state='g';
             tiles[4][7].state='g';
         }
@@ -206,9 +206,9 @@
             tiles[23][6].state='w';
             tiles[23][8].state='w';
 
-            tiles[24][4].state='w';
+            tiles[24][4].state='g';
             tiles[24][6].state='w';
-            tiles[24][8].state='w';
+            tiles[24][8].state='g';
             tiles[24][10].state='w';
 
             tiles[25][2].state='w';
@@ -295,11 +295,11 @@
 
             tiles[41][1].state='w';
             tiles[41][2].state='w';
-            tiles[41][3].state='w';
-            tiles[41][5].state='w';
+            tiles[41][3].state='g';
+            tiles[41][5].state='g';
             tiles[41][6].state='w';
-            tiles[41][7].state='w';
-            tiles[41][9].state='w';
+            tiles[41][7].state='g';
+            tiles[41][9].state='g';
             tiles[41][10].state='w';
             tiles[41][11].state='w';
 
@@ -369,7 +369,7 @@
                 ctx.fillStyle = patD;
             }
             else if(state == 'g'){ // Gates Activate
-                ctx.fillStyle = 'yellow';
+                ctx.fillStyle = patGateImg;
             }
             else{
                 ctx.fillStyle = '#aaaaaa';   // **Extra coloring part but not use
@@ -426,28 +426,28 @@
                 }
 
                 if (xLoc > 0){
-                    if (tiles[xLoc - 1][yLoc].state == 'e' && tiles[xLoc - 1][yLoc].state != 'w' && tiles[xLoc - 1][yLoc].state != 'b' && tiles[xLoc - 1][yLoc].state != 'x') {
+                    if (tiles[xLoc - 1][yLoc].state == 'e' && tiles[xLoc - 1][yLoc].state != 'w' && tiles[xLoc - 1][yLoc].state != 'b' && tiles[xLoc - 1][yLoc].state != 'x' && tiles[xLoc - 1][yLoc].state != 'g') {
                         Xqueue.push(xLoc - 1);
                         Yqueue.push(yLoc);
                         tiles[xLoc - 1][yLoc].state = tiles[xLoc][yLoc].state + 'l';
                     }
                 }
                 if (xLoc < tileColumnCount - 1) {
-                    if (tiles[xLoc + 1][yLoc].state == 'e' && tiles[xLoc + 1][yLoc].state != 'w' && tiles[xLoc + 1][yLoc].state != 'b' && tiles[xLoc + 1][yLoc].state != 'x') {
+                    if (tiles[xLoc + 1][yLoc].state == 'e' && tiles[xLoc + 1][yLoc].state != 'w' && tiles[xLoc + 1][yLoc].state != 'b' && tiles[xLoc + 1][yLoc].state != 'x' && tiles[xLoc + 1][yLoc].state != 'g') {
                         Xqueue.push(xLoc + 1);
                         Yqueue.push(yLoc);
                         tiles[xLoc + 1][yLoc].state = tiles[xLoc][yLoc].state + 'r';
                     }
                 }
                 if (yLoc > 0){
-                    if (tiles[xLoc][yLoc - 1].state == 'e' && tiles[xLoc][yLoc - 1].state != 'w' && tiles[xLoc][yLoc - 1].state != 'b' && tiles[xLoc][yLoc - 1].state != 'x') {
+                    if (tiles[xLoc][yLoc - 1].state == 'e' && tiles[xLoc][yLoc - 1].state != 'w' && tiles[xLoc][yLoc - 1].state != 'b' && tiles[xLoc][yLoc - 1].state != 'x' && tiles[xLoc][yLoc - 1].state != 'g') {
                         Xqueue.push(xLoc);
                         Yqueue.push(yLoc - 1);
                         tiles[xLoc][yLoc - 1].state = tiles[xLoc][yLoc].state + 'u';
                     }
                 }
                 if (yLoc < tileRowCount - 1) {
-                    if (tiles[xLoc][yLoc + 1].state == 'e' && tiles[xLoc][yLoc + 1].state != 'w' && tiles[xLoc][yLoc + 1].state != 'b' && tiles[xLoc][yLoc + 1].state != 'x') {
+                    if (tiles[xLoc][yLoc + 1].state == 'e' && tiles[xLoc][yLoc + 1].state != 'w' && tiles[xLoc][yLoc + 1].state != 'b' && tiles[xLoc][yLoc + 1].state != 'x' && tiles[xLoc][yLoc + 1].state != 'g') {
                         Xqueue.push(xLoc);
                         Yqueue.push(yLoc + 1);
                         tiles[xLoc][yLoc + 1].state = tiles[xLoc][yLoc].state + 'd';
@@ -537,13 +537,7 @@
             for (r = 0; r < tileRowCount; r++) {
                 tiles[c][r]={x: c*(tileW+0.01), y:r*(tileH+0.01), state:'e'}; //state for e is empty
             }
-        }
-
-        // According to above array
-        // tile[0][0] is the First tile and tile[0][0] is the place of first tile 
-        tiles[0][0].state = 's'; // is First tile state
-        tiles[tileColumnCount-1][tileRowCount-1].state = 'f'; //Last tile state
-
+            }
         }
 
         function checkerPot() {
@@ -569,6 +563,22 @@
             }
         }
 
+        var doorLock1Active = false;
+
+        function checkGateOverLimit() {
+            if (tiles[40][4].state == 't' || tiles[40][8].state == 't'){
+                doorLockFirstLevel1();
+                doorLock1Active = true;
+                solveMM();
+            }
+            else if(tiles[23][5].state == 't' || tiles[23][7].state == 't'){
+                 doorLockFirstLevel2();
+            }
+            else if (doorLock1Active == true)
+            {
+                solveMM();
+            }
+        }
 
         function init()
         {
@@ -582,47 +592,55 @@
             cord = this.checkerPot();
             i = cord[0]
             j = cord[1]
-            if (tiles[i][j-1].state == 'e' || tiles[i][j - 1].state != 'w' && tiles[i][j - 1].state != 'b' && tiles[i][j - 1].state != 'x')
+            if (tiles[i][j-1].state == 'e' || tiles[i][j - 1].state != 'w' && tiles[i][j - 1].state != 'b' && tiles[i][j - 1].state != 'x' && tiles[i][j - 1].state != 'g')
             {
                 tiles[i][j].state='e';
                 tiles[i][j-1].state ='t';
+                console.log("Up:-",tiles[i][j-1]);
+                operationMazePart01();
             }
-            solveMM();
         }
         function moveDown() {
             cord = this.checkerPot();
             i = cord[0]
             j = cord[1]
-            if (tiles[i][j+1].state == 'e' || tiles[i][j + 1].state != 'w' && tiles[i][j + 1].state != 'b' && tiles[i][j + 1].state != 'x')
+            if (tiles[i][j+1].state == 'e' || tiles[i][j + 1].state != 'w' && tiles[i][j + 1].state != 'b' && tiles[i][j + 1].state != 'x' && tiles[i][j + 1].state != 'g')
             {
                 tiles[i][j].state='e';
                 tiles[i][j+1].state ='t';
+                console.log("Down:-",tiles[i][j+1]);
+                operationMazePart01();
             }
-            solveMM();
         }
         function moveLeft() {
             cord = this.checkerPot();
             i = cord[0]
             j = cord[1]
-            if (tiles[i-1][j].state == 'e' || tiles[i-1][j].state != 'w' && tiles[i-1][j].state != 'b' && tiles[i-1][j].state != 'x')
+            if (tiles[i-1][j].state == 'e' || tiles[i-1][j].state != 'w' && tiles[i-1][j].state != 'b' && tiles[i-1][j].state != 'x' && tiles[i-1][j].state != 'g')
             {
                 tiles[i][j].state='e';
                 tiles[i-1][j].state ='t';
+                console.log("Left:-",tiles[i-1][j]);
+                operationMazePart01();
             }
-            solveMM();
         }
         function moveRight() {
             cord = this.checkerPot();
             i = cord[0]
             j = cord[1]
-            if (tiles[i+1][j].state == 'e' || tiles[i + 1][j].state != 'w' && tiles[i + 1][j].state != 'b' && tiles[i + 1][j].state != 'x')
+            if (tiles[i+1][j].state == 'e' || tiles[i + 1][j].state != 'w' && tiles[i + 1][j].state != 'b' && tiles[i + 1][j].state != 'x' && tiles[i + 1][j].state != 'g')
             {
                 tiles[i][j].state='e';
                 tiles[i+1][j].state ='t';
+                console.log("Right:-",tiles[i+1][j]);
+                operationMazePart01();
             }
-            solveMM();
         }
         init();
+
+        function operationMazePart01() {
+            checkGateOverLimit();
+        }
         
     </script>
     
