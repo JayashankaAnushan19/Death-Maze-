@@ -403,7 +403,7 @@
         //     },10);
 
         function solveMM(){            
-            clearInterval(runPathFind);
+            
 
             if (typeof Xqueue != 'undefined'  || typeof Yqueue != 'undefined'){
                 Xqueue = [];
@@ -493,9 +493,9 @@
                 var currX = i;
                 var currY = j;
 
+                // clearInterval(runPathFind);
 
                 var i = -1;
-                var runPathFind = null;
                 
                 runPathFind = setInterval(function(){
                     if (i < pathLength - 1 ){
@@ -517,7 +517,6 @@
                         currX -= 1;
                     }
                     if (tiles[currX][currY].state == 't'){
-                        // Show game over
                         gameOver();
                     }
                     tiles[currX][currY].state = 'x';
@@ -526,11 +525,13 @@
                         gameOver();
                     }
                 }
-                },1);
+                },10);
 
                 var pathFound = false;
             }
         }
+
+        
 
         // Draw tiles in whole canvas
         function draw() {
