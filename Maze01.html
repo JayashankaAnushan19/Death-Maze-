@@ -387,19 +387,23 @@
             ctx.clearRect(0,0,WIDTH, HEIGHT);
         }
 
-        function solveMM(){
+        // kerPressControllFunction
+        // setInterval(function(){
+        //     document.addEventListener('keydown', function (e) {
+        //         canvas.key = e.keyCode;
+        //         console.log(canvas.key);
+        //     })
+        //     document.addEventListener('keyup', function (e) {
+        //         canvas.key = false;
+        //     })
+        //         if (canvas.key && canvas.key == 37) {moveLeft(); console.log("Left pressed");}
+        //         if (canvas.key && canvas.key == 39) {moveRight(); console.log("Right pressed");}
+        //         if (canvas.key && canvas.key == 38) {moveUp(); console.log("Up pressed");}
+        //         if (canvas.key && canvas.key == 40) {moveDown(); console.log("Down pressed");}
+        //     },10);
 
-            // tiles[24][1]
-
-            // for (c = 24; c < tileColumnCount - 1; c++) {
-            //     for (r = 1; r < tileRowCount - 1; r++) {
-            //         if (tiles[c][r].state == 'e' || tiles[c][r].state != 'w' && tiles[c][r].state != 't' && tiles[c][r].state != 'b' && tiles[c][r].state != 'x' && tiles[c][r].state != 'g') {
-            //             tiles[c][r].state = 'e';       
-            //         }
-            //     }
-            // }
-            
-            clearInterval(pathCover);
+        function solveMM(){            
+            clearInterval(runPathFind);
 
             if (typeof Xqueue != 'undefined'  || typeof Yqueue != 'undefined'){
                 Xqueue = [];
@@ -491,10 +495,9 @@
 
 
                 var i = -1;
+                var runPathFind = null;
                 
-                setInterval(pathCover,1);
-
-                function pathCover(){
+                runPathFind = setInterval(function(){
                     if (i < pathLength - 1 ){
                         i+=1;
                     if (path.charAt(i + 1) == 'u') {
@@ -509,40 +512,22 @@
                         tiles[currX][currY].state = 'e';
                         currX += 1;
                     }
-                    if (path.charAt(i + 1) == 'l') {
+                    if (path.charAt(i + 1) == 'l' ) {
                         tiles[currX][currY].state = 'e';
                         currX -= 1;
                     }
-
+                    if (tiles[currX][currY].state == 't'){
+                        // Show game over
+                        gameOver();
+                    }
                     tiles[currX][currY].state = 'x';
-                    // console.log(tiles[currX][currY]);
-                    
+                    if (tiles[currX + 1][currY].state == 't' || tiles[currX - 1][currY].state == 't' || tiles[currX][currY + 1].state == 't' || tiles[currX][currY - 1].state == 't'){
+                        // Show game over
+                        gameOver();
+                    }
                 }
-                }
+                },1);
 
-
-                // for (var i = 0; i < pathLength - 1; i++){
-                //     if (path.charAt(i + 1) == 'u') {
-                //         tiles[currX][currY].state = 'e';
-                //         currY -= 1;
-                //     }
-                //     if (path.charAt(i + 1) == 'd') {
-                //         tiles[currX][currY].state = 'e';
-                //         currY += 1;
-                //     }
-                //     if (path.charAt(i + 1) == 'r') {
-                //         tiles[currX][currY].state = 'e';
-                //         currX += 1;
-                //     }
-                //     if (path.charAt(i + 1) == 'l') {
-                //         tiles[currX][currY].state = 'e';
-                //         currX -= 1;
-                //     }
-
-                //     tiles[currX][currY].state = 'x';
-                //     console.log(tiles[currX][currY]);
-                    
-                // } 
                 var pathFound = false;
             }
         }
@@ -555,7 +540,6 @@
                     rect(tiles[c][r].x, tiles[c][r].y, tileW, tileH, tiles[c][r].state);
                 }
             }
-            
         }
 
         function reset(){
@@ -619,12 +603,16 @@
             }
         }
 
+        function gameOver() {
+            var x = document.body;
+            x.style.backgroundColor = "red";
+        }
+
         function init()
         {
             canvas = document.getElementById("myCanvas");
             ctx = canvas.getContext("2d");
             return setInterval (draw, 10);  
-                     
         }
 
         function moveUp() {
