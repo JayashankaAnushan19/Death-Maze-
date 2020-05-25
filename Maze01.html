@@ -207,7 +207,7 @@
             tiles[23][8].state='w';
 
             tiles[24][4].state='g';
-            tiles[24][6].state='w';
+            tiles[24][6].state='g';
             tiles[24][8].state='g';
             tiles[24][10].state='w';
 
@@ -389,6 +389,29 @@
 
         function solveMM(){
 
+            // tiles[24][1]
+
+            // for (c = 24; c < tileColumnCount - 1; c++) {
+            //     for (r = 1; r < tileRowCount - 1; r++) {
+            //         if (tiles[c][r].state == 'e' || tiles[c][r].state != 'w' && tiles[c][r].state != 't' && tiles[c][r].state != 'b' && tiles[c][r].state != 'x' && tiles[c][r].state != 'g') {
+            //             tiles[c][r].state = 'e';       
+            //         }
+            //     }
+            // }
+            
+            clearInterval(pathCover);
+
+            if (typeof Xqueue != 'undefined'  || typeof Yqueue != 'undefined'){
+                Xqueue = [];
+                Yqueue = [];
+            }
+            else if (xLoc !='' || xLoc !='') {
+                xLoc = '';
+                yLoc = '';
+            }
+
+            console.log(Xqueue);
+
             var bLocation = this.checkerPoB();
             i = bLocation[0]
             j = bLocation[1]
@@ -458,6 +481,7 @@
                 // output.innerHTML = "Not Solution";
             }
             else{
+                
                 // output.innerHTML = "Solved!";
                 var path = tiles[xLoc][yLoc].state;
                 var pathLength = path.length;
@@ -467,7 +491,10 @@
 
 
                 var i = -1;
-                setInterval(function(){
+                
+                setInterval(pathCover,1);
+
+                function pathCover(){
                     if (i < pathLength - 1 ){
                         i+=1;
                     if (path.charAt(i + 1) == 'u') {
@@ -488,10 +515,10 @@
                     }
 
                     tiles[currX][currY].state = 'x';
-                    console.log(tiles[currX][currY]);
+                    // console.log(tiles[currX][currY]);
                     
                 }
-                },10);
+                }
 
 
                 // for (var i = 0; i < pathLength - 1; i++){
@@ -552,26 +579,38 @@
         }
 
         function checkerPoB() {
+            var cx = 0;
             for (c=0; c < tileColumnCount ; c++){
                 for (r=0; r < tileRowCount; r++){
-                    if(tiles[c][r].state=='x'){
-                        console.log("Agent B x=",c," ","Y=",r);
-                        return[c,r];
+                    if(tiles[c][r].state =='x'){
+                        cx +=1;
+                        if (cx == 1){
+                            cxa = c;
+                            cxb = r;
+                            
+                        } 
+                        else if (cx > 1)
+                        {
+                            tiles[c][r].state = 'e';
+                        }
+                        // console.log("Count:",cx);                        
                     }
                 }
             
             }
+            // console.log("Agent B x=",c," ","Y=",r , "Count:",cx);
+            return[cxa,cxb];
         }
 
         var doorLock1Active = false;
 
         function checkGateOverLimit() {
-            if (tiles[40][4].state == 't' || tiles[40][8].state == 't'){
+            if (tiles[40][4].state == 't' || tiles[40][8].state == 't'){ // check first level crossed or not
                 doorLockFirstLevel1();
                 doorLock1Active = true;
                 solveMM();
             }
-            else if(tiles[23][5].state == 't' || tiles[23][7].state == 't'){
+            else if(tiles[23][5].state == 't' || tiles[23][7].state == 't'){ // check second level crossed or not
                  doorLockFirstLevel2();
             }
             else if (doorLock1Active == true)
@@ -596,7 +635,7 @@
             {
                 tiles[i][j].state='e';
                 tiles[i][j-1].state ='t';
-                console.log("Up:-",tiles[i][j-1]);
+                // console.log("Up:-",tiles[i][j-1]);
                 operationMazePart01();
             }
         }
@@ -608,7 +647,7 @@
             {
                 tiles[i][j].state='e';
                 tiles[i][j+1].state ='t';
-                console.log("Down:-",tiles[i][j+1]);
+                // console.log("Down:-",tiles[i][j+1]);
                 operationMazePart01();
             }
         }
@@ -620,7 +659,7 @@
             {
                 tiles[i][j].state='e';
                 tiles[i-1][j].state ='t';
-                console.log("Left:-",tiles[i-1][j]);
+                // console.log("Left:-",tiles[i-1][j]);
                 operationMazePart01();
             }
         }
@@ -632,7 +671,7 @@
             {
                 tiles[i][j].state='e';
                 tiles[i+1][j].state ='t';
-                console.log("Right:-",tiles[i+1][j]);
+                // console.log("Right:-",tiles[i+1][j]);
                 operationMazePart01();
             }
         }
