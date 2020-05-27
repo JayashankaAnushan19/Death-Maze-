@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Game</title>
+    <title>My Maze Game</title>
+
+    <link rel="stylesheet" href="Assets/css/bootstrap.css">
+    <link rel="stylesheet" href="Assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Assets/css/bootstrap-grid.css">
+
 </head>
 <body>
-    <canvas id="myCanvas" width="1350" height="380"></canvas><br>
+    <h1 style="text-align: center; margin-top: -5px; margin-bottom: 5px;"><u>&nbsp;&nbsp; Maze Runners ... &nbsp;&nbsp;</u></h1>
+
+    <!-- <div id="msgGame" class="alert alert-success" style="text-align: center;"></div> -->
+
+    <canvas id="myCanvas" width="1340" height="380" style="padding-left: 5px;"></canvas><br>
+
+    
+    
     <img id="agentA" src="A.png" alt="" width="20" height="20" style="display: none;">
     <img id="agentB" src="B.png" alt="" width="20" height="20" style="display: none;">
     <img id="agentC" src="C.png" alt="" width="20" height="20" style="display: none;">
@@ -14,13 +26,41 @@
     <img id="wallImg" src="Wall.png" alt="" width="20" height="20" style="display: none;">
     <img id="boardImg" src="Board.png" alt="" width="20" height="20" style="display: none;">
     <img id="gateImg" src="Gate.png" alt="" width="20" height="20" style="display: none;">
+    
 
-    <div style="text-align:center;width:480px;">
-        <button onclick="moveUp()">Up</button><br><br>
-        <button onclick="moveLeft()">Left</button>
-        <button onclick="moveRight()">Right</button><br><br>
-        <button onclick="moveDown()">Down</button><br><br>
-      </div>
+    <div >&nbsp;</div>
+    <div class="row" style="padding-left: auto; padding-right: auto;">
+        <div class="col">&nbsp;</div>
+        <div style="text-align:center; width:450px; margin-top: -20px;" class="center col">
+            <button class="btn btn-info" style="border-radius: 20%; margin-bottom: -10px; width: 80px" onclick="moveUp()">Up</button><br><br>
+            <button class="btn btn-info" style="border-radius: 20%; margin-bottom: -10px; width: 80px" onclick="moveLeft()">Left</button>
+            <button class="btn btn-info" style="border-radius: 20%; margin-bottom: -10px; width: 80px" onclick="moveRight()">Right</button><br><br>
+            <button class="btn btn-info" style="border-radius: 20%; margin-bottom: -10px; width: 80px" onclick="moveDown()">Down</button><br><br>
+        </div>
+        <div class="col">&nbsp;</div>
+    </div>
+    <div>&nbsp;</div><div>&nbsp;</div>
+    <div>
+        <h6>Created by: N.G.J. Anushan, Tharuka Nawanjali, Sachini, Asanki  /  AI - Course Work 02</h6>
+    </div>
+
+
+        <!-- modal static -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2 class="gamehead"></h2>
+                </div>
+                <div class="modal-footer">
+                    <h2 id="demo" onmouseover="" style="cursor:pointer;">Play Again?</h2>
+                </div>
+            </div>
+
+        </div>
+        <!-- end modal static -->
+    
 
     <script>
         var canvas;
@@ -67,9 +107,10 @@
 
         function agentsResetStaus() {
             tiles[tileColumnCount-3][6].state='t'; // Agent A
+            // tiles[21][5].state='t'; // Agent A
             tiles[22][6].state='x'; // Agent B
-            tiles[17][1].state='Ac'; // Agent C
-            tiles[17][11].state='Ad'; // Agent D
+            tiles[17][11].state='z'; // Agent C
+            tiles[17][1].state='y'; // Agent D
         }
         
         function doorLockFirstLevel1() { //First Level Door Locks
@@ -77,12 +118,12 @@
             tiles[tileColumnCount-5][8].state='g';
         }
 
-        function doorLockFirstLevel2() { //First Level Door Locks
+        function doorLockFirstLevel2() { //Second Level Door Locks
             tiles[24][5].state='g';
             tiles[24][7].state='g';
         }
 
-        function doorLockFirstLevel3() { //First Level Door Locks
+        function doorLockFirstLevel3() { //Third Level Door Locks
             tiles[4][4].state='g';
             tiles[4][7].state='g';
         }
@@ -90,6 +131,7 @@
         function wallFillManually(){
             tiles[1][1].state='w';
             tiles[1][2].state='w';
+            tiles[1][4].state='w';
             tiles[1][5].state='w';
             tiles[1][6].state='w';
             tiles[1][7].state='w';
@@ -105,11 +147,11 @@
             tiles[3][11].state='w';
 
             tiles[4][1].state='w';
-            tiles[4][2].state='w';
-            tiles[4][3].state='w';
+            // tiles[4][2].state='w';
+            tiles[4][3].state='g';
             tiles[4][5].state='w'; 
             tiles[4][6].state='w';
-            tiles[4][8].state='w';
+            tiles[4][8].state='g';
             tiles[4][9].state='w';
             tiles[4][11].state='w';
 
@@ -157,6 +199,7 @@
 
             tiles[13][1].state='w';
             tiles[13][3].state='w';
+            tiles[13][4].state='w';
             tiles[13][5].state='w';
             tiles[13][8].state='w';
             tiles[13][9].state='w';
@@ -166,31 +209,36 @@
             tiles[15][2].state='w';
             tiles[15][3].state='w';
             tiles[15][5].state='w';
-            tiles[15][7].state='w';
+            tiles[15][6].state='w';
             tiles[15][9].state='w';
             tiles[15][10].state='w';
-            tiles[15][11].state='w';
+            
 
             tiles[16][3].state='w';
-            tiles[16][5].state='w';
-            tiles[16][9].state='w';
+            
 
             tiles[17][3].state='w';
+            tiles[17][6].state='w';
             tiles[17][7].state='w';
             tiles[17][9].state='w';
 
             tiles[18][3].state='w';
-            tiles[18][5].state='w';
-            tiles[18][9].state='w';
+            // tiles[18][5].state='w';
+            
 
-            tiles[19][1].state='w';
-            tiles[19][2].state='w';
-            tiles[19][3].state='w';
+            if (AgentDActive != true){
+                agentDGateBrokePart();
+            }
+
+            if (AgentCActive != true){
+                agentCGateBrokePart();
+            }
+            
             tiles[19][5].state='w';
-            tiles[19][7].state='w';
+            tiles[19][6].state='w';
             tiles[19][9].state='w';
             tiles[19][10].state='w';
-            tiles[19][11].state='w';
+            
 
             tiles[22][1].state='w';
             tiles[22][2].state='w';
@@ -243,15 +291,17 @@
 
             tiles[31][3].state='w';
             tiles[31][4].state='w';
+            tiles[31][5].state='w';
             tiles[31][6].state='w';
             tiles[31][8].state='w';
             tiles[31][11].state='w';
 
             tiles[32][1].state='w';
-            tiles[32][6].state='w';
+            // tiles[32][6].state='w';
 
             tiles[33][3].state='w';
-            tiles[33][5].state='w';
+            tiles[33][4].state='w';
+            // tiles[33][5].state='w';
             tiles[33][6].state='w';
             tiles[33][7].state='w';
             tiles[33][9].state='w';
@@ -265,6 +315,7 @@
             tiles[35][5].state='w';
 
             tiles[36][1].state='w';
+            tiles[36][2].state='w';
             tiles[36][3].state='w';
             tiles[36][5].state='w';
             tiles[36][7].state='w';
@@ -273,19 +324,22 @@
             tiles[36][11].state='w';
 
             tiles[37][1].state='w';
-            tiles[37][3].state='w';
+            tiles[37][2].state='w';
+            // tiles[37][3].state='w';
 
+            tiles[38][4].state='w';
             tiles[38][5].state='w';
             tiles[38][6].state='w';
+            tiles[38][8].state='w';
             tiles[38][9].state='w';
             tiles[38][10].state='w';
 
             tiles[39][2].state='w';
             tiles[39][5].state='w';
-            tiles[39][6].state='w';
+            // tiles[39][6].state='w';
             tiles[39][8].state='w';
-            tiles[39][9].state='w';
-            tiles[39][10].state='w';
+            // tiles[39][9].state='w';
+            // tiles[39][10].state='w';
 
             tiles[40][1].state='w';
             tiles[40][2].state='w';
@@ -315,6 +369,19 @@
             tiles[44][11].state='w';
         }
 
+        function agentDGateBrokePart(){
+            tiles[19][1].state='w';
+            tiles[19][2].state='w';
+            tiles[19][3].state='w';
+        }
+
+        function agentCGateBrokePart(){
+            tiles[15][11].state='w';
+            tiles[16][9].state='w';
+            tiles[18][9].state='w';
+            tiles[19][11].state='w';
+        }
+        
         function rect(x,y,w,h,state) {
 
             var imgA = document.getElementById("agentA");
@@ -360,11 +427,11 @@
                 // ctx.fillStyle = 'Green';
                 ctx.fillStyle = patB;
             }
-            else if(state == 'Ac'){ // Agent c
+            else if(state == 'z'){ // Agent c
                 // ctx.fillStyle = 'Red';
                 ctx.fillStyle = patC;
             }
-            else if(state == 'Ad'){ // Agent D
+            else if(state == 'y'){ // Agent D
                 // ctx.fillStyle = 'Black';
                 ctx.fillStyle = patD;
             }
@@ -402,10 +469,10 @@
         //         if (canvas.key && canvas.key == 40) {moveDown(); console.log("Down pressed");}
         //     },10);
 
-        function solveMM(){            
+        function solveMbyB(){            
             
-
-            if (typeof Xqueue != 'undefined'  || typeof Yqueue != 'undefined'){
+        	//Need to restart Queue, there for used following steps to clear the recent data in queue if available.
+            if (typeof Xqueue !== 'undefined'  || typeof Yqueue !== 'undefined'){
                 Xqueue = [];
                 Yqueue = [];
             }
@@ -414,11 +481,42 @@
                 yLoc = '';
             }
 
-            console.log(Xqueue);
+            // console.log(Xqueue);
 
-            var bLocation = this.checkerPoB();
-            i = bLocation[0]
+            var bLocation = this.checkerPoB(); //Find the Agent b's location and get it as a array.
+            i = bLocation[0]  //Assinged got location x and y to i and j.
             j = bLocation[1]
+
+            
+
+            for (var q = 22; q < tileColumnCount - 5 ; q++){
+                for(var z = 1; z < tileRowCount - 1; z ++ ){
+                    wallFillManually();
+
+                    var bLocation = this.checkerPoB(); //Find the Agent b's location and get it as a array.
+                    i = bLocation[0]  //Assinged got location x and y to i and j.
+                    j = bLocation[1]
+                    tiles[i][j] == 'x';
+
+                    var bLocation = this.checkerPot(); //Find the Agent b's location and get it as a array.
+                    n = bLocation[0]  //Assinged got location x and y to i and j.
+                    m = bLocation[1]
+                    tiles[n][m] == 't';
+
+                    if (tiles[q][z] != 'w' ){}
+                    else if(tiles[q][z] != 'x' ){}
+                    else if(tiles[q][z] != 'g' ){}
+                    else if(tiles[q][z] != 't' ){}
+                    else if(tiles[q][z] != 'b' ){}
+                    else{
+                        console.log (tiles[q][z],tiles[q][z].state);
+                        tiles [q][z].state = 'e';
+	                    console.log (tiles[q][z],tiles[q][z].state);
+                    }
+                }
+            }
+            rect();
+
 
             var Xqueue =[i];
             var Yqueue =[j];
@@ -428,7 +526,7 @@
             var yLoc;
 
             while(Xqueue.length > 0 && !pathFound){
-                xLoc = Xqueue.shift();
+                xLoc = Xqueue.shift(); // Get the first values in this queue
                 yLoc = Yqueue.shift();
 
                 if (xLoc > 0){
@@ -486,14 +584,16 @@
             }
             else{
                 
+                if (typeof runPathFind !== 'undefined'){
+                    clearInterval(runPathFind);
+                }
+
                 // output.innerHTML = "Solved!";
                 var path = tiles[xLoc][yLoc].state;
                 var pathLength = path.length;
 
                 var currX = i;
                 var currY = j;
-
-                // clearInterval(runPathFind);
 
                 var i = -1;
                 
@@ -531,8 +631,331 @@
             }
         }
 
-        
+        function solveMbyD(){
+                    	//Need to restart Queue, there for used following steps to clear the recent data in queue if available.
+            if (typeof Xqueue !== 'undefined'  || typeof Yqueue !== 'undefined'){
+                Xqueue = [];
+                Yqueue = [];
+            }
+            else if (xLoc !='' || xLoc !='') {
+                xLoc = '';
+                yLoc = '';
+            }
 
+            // console.log(Xqueue);
+
+            var bLocation = this.checkerPoD(); //Find the Agent d's location and get it as a array.
+            i = bLocation[0]  //Assinged got location x and y to i and j.
+            j = bLocation[1]
+
+            
+
+            for (var q = 21; q < 5 ; q--){
+                for(var z = 1; z < tileRowCount - 1; z ++ ){
+                    wallFillManually();
+
+                    var bLocation = this.checkerPoD(); //Find the Agent d's location and get it as a array.
+                    i = bLocation[0]  //Assinged got location x and y to i and j.
+                    j = bLocation[1]
+                    tiles[i][j] == 'y';
+
+                    var bLocation = this.checkerPot(); //Find the Agent d's location and get it as a array.
+                    n = bLocation[0]  //Assinged got location x and y to i and j.
+                    m = bLocation[1]
+                    tiles[n][m] == 't';
+
+                    if (tiles[q][z] != 'w' ){}
+                    else if(tiles[q][z] != 'y' ){}
+	  else if(tiles[q][z] != 'z' ){}
+                    else if(tiles[q][z] != 'g' ){}
+                    else if(tiles[q][z] != 't' ){}
+                    else if(tiles[q][z] != 'b' ){}
+                    else{
+                        console.log (tiles[q][z],tiles[q][z].state);
+                        tiles [q][z].state = 'e';
+	                    console.log (tiles[q][z],tiles[q][z].state);
+                    }
+                }
+            }
+            rect();
+
+
+            var Xqueue =[i];
+            var Yqueue =[j];
+
+            var pathFoundD = false;
+            var xLoc;
+            var yLoc;
+
+            while(Xqueue.length > 0 && !pathFoundD){
+                xLoc = Xqueue.shift(); // Get the first values in this queue
+                yLoc = Yqueue.shift();
+
+                if (xLoc > 0){
+                    if (tiles[xLoc - 1][yLoc].state == 't') {
+                        pathFoundD=true;
+                    }
+                }
+                if (xLoc < tileColumnCount - 1) {
+                    if (tiles[xLoc + 1][yLoc].state == 't') {
+                        pathFoundD = true;
+                    }
+                }
+                if (yLoc > 0){
+                    if (tiles[xLoc][yLoc - 1].state == 't') {
+                        pathFoundD=true;
+                    }
+                }
+                if (yLoc < tileRowCount - 1) {
+                    if (tiles[xLoc][yLoc + 1].state == 't') {
+                        pathFoundD = true;
+                    }
+                }
+
+                if (xLoc > 0){
+                    if (tiles[xLoc - 1][yLoc].state == 'e' && tiles[xLoc - 1][yLoc].state != 'w' && tiles[xLoc - 1][yLoc].state != 'b' && tiles[xLoc - 1][yLoc].state != 'y' && tiles[xLoc - 1][yLoc].state != 'z' && tiles[xLoc - 1][yLoc].state != 'g') {
+                        Xqueue.push(xLoc - 1);
+                        Yqueue.push(yLoc);
+                        tiles[xLoc - 1][yLoc].state = tiles[xLoc][yLoc].state + 'l';
+                    }
+                }
+                if (xLoc < tileColumnCount - 1) {
+                    if (tiles[xLoc + 1][yLoc].state == 'e' && tiles[xLoc + 1][yLoc].state != 'w' && tiles[xLoc + 1][yLoc].state != 'b' && tiles[xLoc + 1][yLoc].state != 'y' && tiles[xLoc + 1][yLoc].state != 'z' && tiles[xLoc + 1][yLoc].state != 'g') {
+                        Xqueue.push(xLoc + 1);
+                        Yqueue.push(yLoc);
+                        tiles[xLoc + 1][yLoc].state = tiles[xLoc][yLoc].state + 'r';
+                    }
+                }
+                if (yLoc > 0){
+                    if (tiles[xLoc][yLoc - 1].state == 'e' && tiles[xLoc][yLoc - 1].state != 'w' && tiles[xLoc][yLoc - 1].state != 'b' && tiles[xLoc][yLoc - 1].state != 'y' && tiles[xLoc][yLoc - 1].state != 'z' && tiles[xLoc][yLoc - 1].state != 'g') {
+                        Xqueue.push(xLoc);
+                        Yqueue.push(yLoc - 1);
+                        tiles[xLoc][yLoc - 1].state = tiles[xLoc][yLoc].state + 'u';
+                    }
+                }
+                if (yLoc < tileRowCount - 1) {
+                    if (tiles[xLoc][yLoc + 1].state == 'e' && tiles[xLoc][yLoc + 1].state != 'w' && tiles[xLoc][yLoc + 1].state != 'b' && tiles[xLoc][yLoc + 1].state != 'y' && tiles[xLoc][yLoc + 1].state != 'z' && tiles[xLoc][yLoc + 1].state != 'g') {
+                        Xqueue.push(xLoc);
+                        Yqueue.push(yLoc + 1);
+                        tiles[xLoc][yLoc + 1].state = tiles[xLoc][yLoc].state + 'd';
+                    }
+                }
+            }
+            if (!pathFoundD){
+                // output.innerHTML = "Not Solution";
+            }
+            else{
+                
+                if (typeof runPathFindD !== 'undefined'){
+                    clearInterval(runPathFindD);
+                }
+
+                // output.innerHTML = "Solved!";
+                var path = tiles[xLoc][yLoc].state;
+                var pathLength = path.length;
+
+                var currX = i;
+                var currY = j;
+
+                var i = -1;
+                
+                runPathFindD = setInterval(function(){
+                    if (i < pathLength - 1 ){
+                        i+=1;
+                    if (path.charAt(i + 1) == 'u') {
+                        tiles[currX][currY].state = 'e';
+                        currY -= 1;
+                    }
+                    if (path.charAt(i + 1) == 'd') {
+                        tiles[currX][currY].state = 'e';
+                        currY += 1;
+                    }
+                    if (path.charAt(i + 1) == 'r') {
+                        tiles[currX][currY].state = 'e';
+                        currX += 1;
+                    }
+                    if (path.charAt(i + 1) == 'l' ) {
+                        tiles[currX][currY].state = 'e';
+                        currX -= 1;
+                    }
+                    if (tiles[currX][currY].state == 't'){
+                        gameOver();
+                    }
+                    tiles[currX][currY].state = 'y';
+                    if (tiles[currX + 1][currY].state == 't' || tiles[currX - 1][currY].state == 't' || tiles[currX][currY + 1].state == 't' || tiles[currX][currY - 1].state == 't'){
+                        // Show game over
+                        gameOver();
+                    }
+                }
+                },5);
+
+                var pathFoundD = false;
+            }
+        }
+
+        function solveMbyC(){
+                    	//Need to restart Queue, there for used following steps to clear the recent data in queue if available.
+            if (typeof Xqueue !== 'undefined'  || typeof Yqueue !== 'undefined'){
+                Xqueue = [];
+                Yqueue = [];
+            }
+            else if (xLoc !='' || xLoc !='') {
+                xLoc = '';
+                yLoc = '';
+            }
+
+            // console.log(Xqueue);
+
+            var bLocation = this.checkerPoC(); //Find the Agent c's location and get it as a array.
+            i = bLocation[0]  //Assinged got location x and y to i and j.
+            j = bLocation[1]
+
+            
+
+            for (var q = 21; q < 5 ; q--){
+                for(var z = 1; z < tileRowCount - 1; z ++ ){
+                    wallFillManually();
+
+                    var bLocation = this.checkerPoC(); //Find the Agent c's location and get it as a array.
+                    i = bLocation[0]  //Assinged got location x and y to i and j.
+                    j = bLocation[1]
+                    tiles[i][j] == 'y';
+
+                    var bLocation = this.checkerPot(); //Find the Agent c's location and get it as a array.
+                    n = bLocation[0]  //Assinged got location x and y to i and j.
+                    m = bLocation[1]
+                    tiles[n][m] == 't';
+
+                    if (tiles[q][z] != 'w' ){}
+                    else if(tiles[q][z] != 'y' ){}
+	  else if(tiles[q][z] != 'z' ){}
+                    else if(tiles[q][z] != 'g' ){}
+                    else if(tiles[q][z] != 't' ){}
+                    else if(tiles[q][z] != 'b' ){}
+                    else{
+                        console.log (tiles[q][z],tiles[q][z].state);
+                        tiles [q][z].state = 'e';
+	                    console.log (tiles[q][z],tiles[q][z].state);
+                    }
+                }
+            }
+            rect();
+
+
+            var Xqueue =[i];
+            var Yqueue =[j];
+
+            var pathFoundC = false;
+            var xLoc;
+            var yLoc;
+
+            while(Xqueue.length > 0 && !pathFoundC){
+                xLoc = Xqueue.shift(); // Get the first values in this queue
+                yLoc = Yqueue.shift();
+
+                if (xLoc > 0){
+                    if (tiles[xLoc - 1][yLoc].state == 't') {
+                        pathFoundC=true;
+                    }
+                }
+                if (xLoc < tileColumnCount - 1) {
+                    if (tiles[xLoc + 1][yLoc].state == 't') {
+                        pathFoundC = true;
+                    }
+                }
+                if (yLoc > 0){
+                    if (tiles[xLoc][yLoc - 1].state == 't') {
+                        pathFoundC=true;
+                    }
+                }
+                if (yLoc < tileRowCount - 1) {
+                    if (tiles[xLoc][yLoc + 1].state == 't') {
+                        pathFoundC = true;
+                    }
+                }
+
+                if (xLoc > 0){
+                    if (tiles[xLoc - 1][yLoc].state == 'e' && tiles[xLoc - 1][yLoc].state != 'w' && tiles[xLoc - 1][yLoc].state != 'b' && tiles[xLoc - 1][yLoc].state != 'y' && tiles[xLoc - 1][yLoc].state != 'z' && tiles[xLoc - 1][yLoc].state != 'g') {
+                        Xqueue.push(xLoc - 1);
+                        Yqueue.push(yLoc);
+                        tiles[xLoc - 1][yLoc].state = tiles[xLoc][yLoc].state + 'l';
+                    }
+                }
+                if (xLoc < tileColumnCount - 1) {
+                    if (tiles[xLoc + 1][yLoc].state == 'e' && tiles[xLoc + 1][yLoc].state != 'w' && tiles[xLoc + 1][yLoc].state != 'b' && tiles[xLoc + 1][yLoc].state != 'y' && tiles[xLoc + 1][yLoc].state != 'z' && tiles[xLoc + 1][yLoc].state != 'g') {
+                        Xqueue.push(xLoc + 1);
+                        Yqueue.push(yLoc);
+                        tiles[xLoc + 1][yLoc].state = tiles[xLoc][yLoc].state + 'r';
+                    }
+                }
+                if (yLoc > 0){
+                    if (tiles[xLoc][yLoc - 1].state == 'e' && tiles[xLoc][yLoc - 1].state != 'w' && tiles[xLoc][yLoc - 1].state != 'b' && tiles[xLoc][yLoc - 1].state != 'y' && tiles[xLoc][yLoc - 1].state != 'z' && tiles[xLoc][yLoc - 1].state != 'g') {
+                        Xqueue.push(xLoc);
+                        Yqueue.push(yLoc - 1);
+                        tiles[xLoc][yLoc - 1].state = tiles[xLoc][yLoc].state + 'u';
+                    }
+                }
+                if (yLoc < tileRowCount - 1) {
+                    if (tiles[xLoc][yLoc + 1].state == 'e' && tiles[xLoc][yLoc + 1].state != 'w' && tiles[xLoc][yLoc + 1].state != 'b' && tiles[xLoc][yLoc + 1].state != 'y' && tiles[xLoc][yLoc + 1].state != 'z' && tiles[xLoc][yLoc + 1].state != 'g') {
+                        Xqueue.push(xLoc);
+                        Yqueue.push(yLoc + 1);
+                        tiles[xLoc][yLoc + 1].state = tiles[xLoc][yLoc].state + 'd';
+                    }
+                }
+            }
+            if (!pathFoundC){
+                // output.innerHTML = "Not Solution";
+            }
+            else{
+                
+                if (typeof runPathFindC !== 'undefined'){
+                    clearInterval(runPathFindC);
+                }
+
+                // output.innerHTML = "Solved!";
+                var path = tiles[xLoc][yLoc].state;
+                var pathLength = path.length;
+
+                var currX = i;
+                var currY = j;
+
+                var i = -1;
+                
+                runPathFindC = setInterval(function(){
+                    if (i < pathLength - 1 ){
+                        i+=1;
+                    if (path.charAt(i + 1) == 'u') {
+                        tiles[currX][currY].state = 'e';
+                        currY -= 1;
+                    }
+                    if (path.charAt(i + 1) == 'd') {
+                        tiles[currX][currY].state = 'e';
+                        currY += 1;
+                    }
+                    if (path.charAt(i + 1) == 'r') {
+                        tiles[currX][currY].state = 'e';
+                        currX += 1;
+                    }
+                    if (path.charAt(i + 1) == 'l' ) {
+                        tiles[currX][currY].state = 'e';
+                        currX -= 1;
+                    }
+                    if (tiles[currX][currY].state == 't'){
+                        gameOver();
+                    }
+                    tiles[currX][currY].state = 'z';
+                    if (tiles[currX + 1][currY].state == 't' || tiles[currX - 1][currY].state == 't' || tiles[currX][currY + 1].state == 't' || tiles[currX][currY - 1].state == 't'){
+                        // Show game over
+                        gameOver();
+                    }
+                }
+                },10);
+
+                var pathFoundC = false;
+            }
+        }
+
+        
         // Draw tiles in whole canvas
         function draw() {
             clear();
@@ -587,21 +1010,101 @@
             return[cxa,cxb];
         }
 
+        function checkerPoD() {
+            var cx = 0;
+            for (c=0; c < tileColumnCount ; c++){
+                for (r=0; r < tileRowCount; r++){
+                    if(tiles[c][r].state =='y'){
+                        cx +=1;
+                        if (cx == 1){
+                            cxa = c;
+                            cxb = r;
+                            
+                        } 
+                        else if (cx > 1)
+                        {
+                            tiles[c][r].state = 'e';
+                        }
+                        console.log(cxa,cxb);                        
+                    }
+                }
+            
+            }
+            // console.log("Agent B x=",c," ","Y=",r , "Count:",cx);
+            return[cxa,cxb];
+        }
+
+        function checkerPoC() {
+            var cx = 0;
+            for (c=0; c < tileColumnCount ; c++){
+                for (r=0; r < tileRowCount; r++){
+                    if(tiles[c][r].state =='z'){
+                        cx +=1;
+                        if (cx == 1){
+                            cxa = c;
+                            cxb = r;
+                            
+                        } 
+                        else if (cx > 1)
+                        {
+                            tiles[c][r].state = 'e';
+                        }
+                        console.log(cxa,cxb);                        
+                    }
+                }
+            
+            }
+            // console.log("Agent B x=",c," ","Y=",r , "Count:",cx);
+            return[cxa,cxb];
+        }
+
         var doorLock1Active = false;
+        var AgentCActive = false;
+        var AgentDActive = false;
 
         function checkGateOverLimit() {
+
             if (tiles[40][4].state == 't' || tiles[40][8].state == 't'){ // check first level crossed or not
                 doorLockFirstLevel1();
                 doorLock1Active = true;
-                solveMM();
+                solveMbyB();
             }
             else if(tiles[23][5].state == 't' || tiles[23][7].state == 't'){ // check second level crossed or not
                  doorLockFirstLevel2();
             }
+            else if(tiles[19][4].state == 't' || tiles[19][6].state == 't' || tiles[19][8].state == 't'){ // check second level crossed or not
+                tiles[19][1].state = 'e';
+                tiles[19][2].state = 'e';
+                tiles[19][3].state = 'e';
+                 solveMbyD();
+                 AgentDActive = true;
+            }
+            else if(tiles[10][2].state == 't' || tiles[10][3].state == 't' || tiles[10][4].state == 't' || tiles[10][6].state == 't' || tiles[10][9].state == 't' || tiles[10][10].state == 't' || tiles[10][11].state == 't'
+){ // check second level crossed or not
+                tiles[15][11].state='e';
+                tiles[16][9].state='e';
+                tiles[18][9].state='e';
+                tiles[19][11].state='e';    
+                 solveMbyC();
+                 solveMbyD();
+                 AgentCActive = true;
+            }
+            else if(tiles[3][4].state == 't' || tiles[3][7].state == 't'){ // check second level crossed or not
+                 doorLockFirstLevel3();
+            }
             else if (doorLock1Active == true)
             {
-                solveMM();
+                solveMbyB();
             }
+            else if (AgentDActive == true)
+            {
+                solveMbyD();
+            }
+            else if (AgentCActive == true)
+            {
+                solveMbyC();
+            }
+            
         }
 
         function gameOver() {
@@ -625,9 +1128,10 @@
                 tiles[i][j].state='e';
                 tiles[i][j-1].state ='t';
                 // console.log("Up:-",tiles[i][j-1]);
-                operationMazePart01();
+                operationMaze();
             }
         }
+
         function moveDown() {
             cord = this.checkerPot();
             i = cord[0]
@@ -637,9 +1141,10 @@
                 tiles[i][j].state='e';
                 tiles[i][j+1].state ='t';
                 // console.log("Down:-",tiles[i][j+1]);
-                operationMazePart01();
+                operationMaze();
             }
         }
+
         function moveLeft() {
             cord = this.checkerPot();
             i = cord[0]
@@ -649,9 +1154,11 @@
                 tiles[i][j].state='e';
                 tiles[i-1][j].state ='t';
                 // console.log("Left:-",tiles[i-1][j]);
-                operationMazePart01();
+                operationMaze();
             }
+            
         }
+
         function moveRight() {
             cord = this.checkerPot();
             i = cord[0]
@@ -661,12 +1168,12 @@
                 tiles[i][j].state='e';
                 tiles[i+1][j].state ='t';
                 // console.log("Right:-",tiles[i+1][j]);
-                operationMazePart01();
+                operationMaze();
             }
         }
         init();
 
-        function operationMazePart01() {
+        function operationMaze() {
             checkGateOverLimit();
         }
         
