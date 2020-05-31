@@ -10,22 +10,22 @@
     <link rel="stylesheet" href="Assets/css/bootstrap-grid.css">
 
 </head>
-<body>
-    <h1 style="text-align: center; margin-top: -5px; margin-bottom: 5px;"><u>&nbsp;&nbsp; Maze Runners ... &nbsp;&nbsp;</u></h1>
+<body style="background-image: url('BodyBg.jpg'); width: 100%">
+    <h1 style="text-align: center; margin-top: -5px; margin-bottom: 5px;">
+        <u>&nbsp;&nbsp; Maze Runners ... &nbsp;&nbsp;</u>
+    </h1>
 
-    <!-- <div id="msgGame" class="alert alert-success" style="text-align: center;"></div> -->
-
-    <canvas id="myCanvas" width="1340" height="380" style="padding-left: 5px;"></canvas><br>
+    <canvas id="myCanvas" width="1329" height="380" style="padding-left: 5px; margin-right: -50px;"></canvas><br>
 
     
     
-    <img id="agentA" src="A.png" alt="" width="20" height="20" style="display: none;">
-    <img id="agentB" src="B.png" alt="" width="20" height="20" style="display: none;">
-    <img id="agentC" src="C.png" alt="" width="20" height="20" style="display: none;">
-    <img id="agentD" src="D.png" alt="" width="20" height="20" style="display: none;">
-    <img id="wallImg" src="Wall.png" alt="" width="20" height="20" style="display: none;">
-    <img id="boardImg" src="Board.png" alt="" width="20" height="20" style="display: none;">
-    <img id="gateImg" src="Gate.png" alt="" width="20" height="20" style="display: none;">
+    <img id="agentA" src="A.png" alt="" width="5" height="20" style="display: none;">
+    <img id="agentB" src="B.png" alt="" width="5" height="20" style="display: none;">
+    <img id="agentC" src="C.png" alt="" width="5" height="20" style="display: none;">
+    <img id="agentD" src="D.png" alt="" width="5" height="20" style="display: none;">
+    <img id="wallImg" src="Wall.png" alt="" width="5" height="20" style="display: none;">
+    <img id="boardImg" src="Board.png" alt="" width="5" height="20" style="display: none;">
+    <img id="gateImg" src="Gate.png" alt="" width="5" height="20" style="display: none;">
     
 
     <div >&nbsp;</div>
@@ -41,26 +41,8 @@
     </div>
     <div>&nbsp;</div><div>&nbsp;</div>
     <div>
-        <h6>Created by: N.G.J. Anushan, Tharuka Nawanjali, Sachini, Asanki  /  AI - Course Work 02</h6>
+        <h6 style="margin-left: 5px; padding-left: 5px; padding-right: 5px" class="card"><br>Created by: <br> N. G. Jayashanka Anushan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &nbsp;( COL/E-011498 ),<br> A. E. Tharuka Nawanjali &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &nbsp;( COL/E-011393 ),<br> S. D. Samarakoon &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &nbsp;( COL/A-067893 ),<br> A. L. Asanki Hasthika &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &nbsp;( COL/E-009320 ) <br><br>For: AI - Course Work 02 <br>&nbsp;</h6>
     </div>
-
-
-        <!-- modal static -->
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close">&times;</span>
-                    <h2 class="gamehead"></h2>
-                </div>
-                <div class="modal-footer">
-                    <h2 id="demo" onmouseover="" style="cursor:pointer;">Play Again?</h2>
-                </div>
-            </div>
-
-        </div>
-        <!-- end modal static -->
-    
 
     <script>
         var canvas;
@@ -68,7 +50,7 @@
         
         // Height and Weight of the Canvas
         var HEIGHT = 380;
-        var WIDTH = 1400;
+        var WIDTH = 1330;
 
         // Tile height and weight
         tileH = 29;
@@ -105,7 +87,6 @@
 
         function agentsResetStaus() {
             tiles[tileColumnCount-3][6].state='t'; // Agent A
-            // tiles[21][5].state='t'; // Agent A
             tiles[22][6].state='x'; // Agent B
             tiles[17][11].state='z'; // Agent C
             tiles[17][1].state='y'; // Agent D
@@ -125,10 +106,9 @@
         function doorLockFirstLevel3() { //Third Level Door Locks
             tiles[4][4].state='g';
             tiles[4][7].state='g';
-            // gameWin();
         }
 
-        function remakeLevel2Area(){
+        function remakeLevel2Area(){ // Reset level 2 area
             for(var o = 1; 0 < 22; o++){
                 for(var p = 1; p < tileRowCount - 1; p++){
                     if(tiles[o][p].state != 'w' && tiles[o][p].state != 'b' && tiles[o][p].state != 'g' && tiles[o][p].state != 'x' && tiles[o][p].state != 'y' && tiles[o][p].state != 'z' && tiles[o][p].state != 't'){
@@ -138,7 +118,7 @@
             }
         }
 
-        function wallFillManually(){
+        function wallFillManually(){ //Make walls manually
             tiles[1][1].state='w';
             tiles[1][2].state='w';
             tiles[1][4].state='w';
@@ -157,7 +137,6 @@
             tiles[3][11].state='w';
 
             tiles[4][1].state='w';
-            // tiles[4][2].state='w';
             tiles[4][3].state='g';
             tiles[4][5].state='w'; 
             tiles[4][6].state='w';
@@ -223,19 +202,15 @@
             tiles[15][9].state='w';
             tiles[15][10].state='w';
             
-
             tiles[16][3].state='w';
             
-
             tiles[17][3].state='w';
             tiles[17][6].state='w';
             tiles[17][7].state='w';
             tiles[17][9].state='w';
 
             tiles[18][3].state='w';
-            // tiles[18][5].state='w';
             
-
             if (AgentDActive != true){
                 agentDGateBrokePart();
             }
@@ -309,11 +284,9 @@
             tiles[31][11].state='w';
 
             tiles[32][1].state='w';
-            // tiles[32][6].state='w';
 
             tiles[33][3].state='w';
             tiles[33][4].state='w';
-            // tiles[33][5].state='w';
             tiles[33][6].state='w';
             tiles[33][7].state='w';
             tiles[33][9].state='w';
@@ -337,7 +310,6 @@
 
             tiles[37][1].state='w';
             tiles[37][2].state='w';
-            // tiles[37][3].state='w';
 
             tiles[38][4].state='w';
             tiles[38][5].state='w';
@@ -348,10 +320,7 @@
 
             tiles[39][2].state='w';
             tiles[39][5].state='w';
-            // tiles[39][6].state='w';
             tiles[39][8].state='w';
-            // tiles[39][9].state='w';
-            // tiles[39][10].state='w';
 
             tiles[40][1].state='w';
             tiles[40][2].state='w';
@@ -381,19 +350,19 @@
             tiles[44][11].state='w';
         }
 
-        function agentDGateBrokePart(){
+        function agentDGateBrokePart(){ //Breaking walls of Agent D's
             tiles[19][1].state='w';
             tiles[19][2].state='w';
         }
 
-        function agentCGateBrokePart(){
+        function agentCGateBrokePart(){ //Breaking walls of Agent C's
             tiles[15][11].state='w';
             tiles[16][9].state='w';
             tiles[18][9].state='w';
             tiles[19][11].state='w';
         }
         
-        function rect(x,y,w,h,state) {
+        function rect(x,y,w,h,state) { // Tile reset and re-colour
 
             var imgA = document.getElementById("agentA");
             var patA = ctx.createPattern(imgA, "repeat");
@@ -417,33 +386,25 @@
             var patGateImg = ctx.createPattern(imgGateImg, "repeat");
 
 
-            //red red green green blue blue
-
             if (state =='b') { // Boarder
-                // ctx.fillStyle = '#000000';  
                 ctx.fillStyle = patBoardImg;            
             }
-            else if (state =='t') { // Agent A
-                // ctx.fillStyle = 'Blue';    //    immg       
+            else if (state =='t') { // Agent A      
                 ctx.fillStyle = patA;
             }  
             else if(state == 'e'){ // Empty road
                 ctx.fillStyle = '#aaaaaa';   
             }
-            else if(state == 'w'){ // Walls
-                // ctx.fillStyle = '#D2691E';   
+            else if(state == 'w'){ // Walls  
                 ctx.fillStyle = patW;
             }
             else if(state == 'x'){ // Agent B
-                // ctx.fillStyle = 'Green';
                 ctx.fillStyle = patB;
             }
             else if(state == 'z'){ // Agent c
-                // ctx.fillStyle = 'Red';
                 ctx.fillStyle = patC;
             }
             else if(state == 'y'){ // Agent D
-                // ctx.fillStyle = 'Black';
                 ctx.fillStyle = patD;
             }
             else if(state == 'g'){ // Gates Activate
@@ -457,28 +418,13 @@
             ctx.rect(x,y,w,h);
             ctx.closePath();
             ctx.fill();
-            setTimeout(rect, 1000); // check again in a second 
+            setTimeout(rect, 800); // check again in a second 
         }
 
         // This function Clear the canvas from 0,0 to End tile
         function clear() {
             ctx.clearRect(0,0,WIDTH, HEIGHT);
         }
-
-        // kerPressControllFunction
-        // setInterval(function(){
-        //     document.addEventListener('keydown', function (e) {
-        //         canvas.key = e.keyCode;
-        //         console.log(canvas.key);
-        //     })
-        //     document.addEventListener('keyup', function (e) {
-        //         canvas.key = false;
-        //     })
-        //         if (canvas.key && canvas.key == 37) {moveLeft(); console.log("Left pressed");}
-        //         if (canvas.key && canvas.key == 39) {moveRight(); console.log("Right pressed");}
-        //         if (canvas.key && canvas.key == 38) {moveUp(); console.log("Up pressed");}
-        //         if (canvas.key && canvas.key == 40) {moveDown(); console.log("Down pressed");}
-        //     },10);
 
         function solveMbyB(){            
             
@@ -491,8 +437,6 @@
                 xLoc = '';
                 yLoc = '';
             }
-
-            // console.log(Xqueue);
 
             var bLocation = this.checkerPoB(); //Find the Agent b's location and get it as a array.
             i = bLocation[0]  //Assinged got location x and y to i and j.
@@ -537,7 +481,7 @@
             var yLoc;
 
             while(Xqueue.length > 0 && !pathFound){
-                xLoc = Xqueue.shift(); // Get the first values in this queue
+                xLoc = Xqueue.shift(); // Get the values in this queue
                 yLoc = Yqueue.shift();
 
                 if (xLoc > 0){
@@ -643,7 +587,8 @@
         }
 
         function solveMbyD(){
-                    	//Need to restart Queue, there for used following steps to clear the recent data in queue if available.
+
+            //Need to restart Queue, there for used following steps to clear the recent data in queue if available.
             if (typeof Xqueue !== 'undefined'  || typeof Yqueue !== 'undefined'){
                 Xqueue = [];
                 Yqueue = [];
@@ -652,8 +597,6 @@
                 xLoc = '';
                 yLoc = '';
             }
-
-            // console.log(Xqueue);
 
             var dhLocation = this.checkerPoD(); //Find the Agent d's location and get it as a array.
             i = dhLocation[0]  //Assinged got location x and y to i and j.
@@ -670,7 +613,7 @@
                     j = dgLocation[1]
                     tiles[i][j] == 'y';
 
-                    var dtLocation = this.checkerPot(); //Find the Agent d's location and get it as a array.
+                    var dtLocation = this.checkerPot(); //Find the target's location and get it as a array.
                     n = dtLocation[0]  //Assinged got location x and y to i and j.
                     m = dtLocation[1]
                     tiles[n][m] == 't';
@@ -699,7 +642,7 @@
             var yLoc;
 
             while(Xqueue.length > 0 && !pathFoundD){
-                xLoc = Xqueue.shift(); // Get the first values in this queue
+                xLoc = Xqueue.shift(); // Get the values in this queue
                 yLoc = Yqueue.shift();
 
                 if (xLoc > 0){
@@ -805,7 +748,8 @@
         }
 
         function solveMbyC(){
-                    	//Need to restart Queue, there for used following steps to clear the recent data in queue if available.
+                    	
+            //Need to restart Queue, there for used following steps to clear the recent data in queue if available.
             if (typeof Xqueue !== 'undefined'  || typeof Yqueue !== 'undefined'){
                 Xqueue = [];
                 Yqueue = [];
@@ -813,15 +757,7 @@
             else if (xLoc !='' || xLoc !='') {
                 xLoc = '';
                 yLoc = '';
-            }
-
-            // console.log(Xqueue);
-
-            var bLocation = this.checkerPoC(); //Find the Agent c's location and get it as a array.
-            i = bLocation[0]  //Assinged got location x and y to i and j.
-            j = bLocation[1]
-
-            
+            }     
 
             for (var q = 21; q < 5 ; q--){
                 for(var z = 1; z < tileRowCount - 1; z ++ ){
@@ -832,7 +768,7 @@
                     j = bLocation[1]
                     tiles[i][j] == 'z';
 
-                    var bLocation = this.checkerPot(); //Find the Agent c's location and get it as a array.
+                    var bLocation = this.checkerPot(); //Find the target's location and get it as a array.
                     n = bLocation[0]  //Assinged got location x and y to i and j.
                     m = bLocation[1]
                     tiles[n][m] == 't';
@@ -852,6 +788,9 @@
             }
             rect();
 
+            var bLocation = this.checkerPoC(); //Find the Agent c's location and get it as a array.
+            i = bLocation[0]  //Assinged got location x and y to i and j.
+            j = bLocation[1]
 
             var Xqueue =[i];
             var Yqueue =[j];
@@ -960,7 +899,7 @@
                         gameOver();
                     }
                 }
-                },10);
+                },5);
 
                 var pathFoundC = false;
             }
@@ -986,6 +925,7 @@
             }
         }
 
+        //Find the Target's location
         function checkerPot() {
             for (c=0; c < tileColumnCount ; c++){
                 for (r=0; r < tileRowCount; r++){
@@ -997,6 +937,7 @@
             }
         }
 
+        //Find the Agent B's location
         function checkerPoB() {
             var cx = 0;
             for (c=0; c < tileColumnCount ; c++){
@@ -1021,6 +962,7 @@
             return[cxa,cxb];
         }
 
+        //Find the Agent D's location
         function checkerPoD() {
             var cx = 0;
             for (c=0; c < tileColumnCount ; c++){
@@ -1045,6 +987,7 @@
             return[cxa,cxb];
         }
 
+        //Find the Agent C's location
         function checkerPoC() {
             var cx = 0;
             for (c=0; c < tileColumnCount ; c++){
@@ -1073,6 +1016,7 @@
         var AgentCActive = false;
         var AgentDActive = false;
 
+        //Check some limitation and take actions according to this limitations
         function checkGateOverLimit() {
 
             if (tiles[40][4].state == 't' || tiles[40][8].state == 't'){ // check first level crossed or not
@@ -1084,37 +1028,43 @@
                  doorLockFirstLevel2();
             }
             else if(tiles[19][4].state == 't' || tiles[19][7].state == 't' || tiles[19][8].state == 't'){ // check this level crossed or not
-                if(!AgentDActive){
-                     remakeLevel2Area();
-                }
+                agentDGateBrokePart();
+
                 tiles[19][1].state = 'e';
                 tiles[19][2].state = 'e';
-                // tiles[19][3].state = 'e';
+                
                  solveMbyD();
                  
                  AgentDActive = true;
+                 console.log("Agent D Activated:",AgentDActive);
             }
             else if(tiles[10][2].state == 't' || tiles[10][3].state == 't' || tiles[10][4].state == 't' || tiles[10][6].state == 't' || tiles[10][9].state == 't' || tiles[10][10].state == 't' || tiles[10][11].state == 't'){ // check second level crossed or not
+                // remakeLevel2Area();
+                agentCGateBrokePart();
                 tiles[15][11].state='e';
                 tiles[16][9].state='e';
                 tiles[18][9].state='e';
                 tiles[19][11].state='e';    
                  solveMbyC();
                  AgentCActive = true;
+                 console.log("Agent C Activated:",AgentCActive);
             }
             else if(tiles[3][4].state == 't' || tiles[3][7].state == 't'){ // check second level crossed or not
                  doorLockFirstLevel3();
             }
             else if (doorLock1Active == true)
             {
+                
                 solveMbyB();
             }
-            else if (AgentDActive == true)
+            if (AgentDActive == true)
             {
+                console.log("Agent D check:",AgentDActive);
                 solveMbyD();
             }
             else if (AgentCActive == true)
             {
+                console.log("Agent C check:",AgentCActive);
                 solveMbyC();
             }
             else 
