@@ -1038,8 +1038,7 @@
                  AgentDActive = true;
                  console.log("Agent D Activated:",AgentDActive);
             }
-            else if(tiles[10][2].state == 't' || tiles[10][3].state == 't' || tiles[10][4].state == 't' || tiles[10][6].state == 't' || tiles[10][9].state == 't' || tiles[10][10].state == 't' || tiles[10][11].state == 't'){ // check second level crossed or not
-                remakeLevel2Area();
+            else if(tiles[14][4].state == 't' || tiles[14][7].state == 't' || tiles[14][8].state == 't' ){ // check second level crossed or not   remakeLevel2Area();
                 agentCGateBrokePart();
                 tiles[15][11].state='e';
                 tiles[16][9].state='e';
