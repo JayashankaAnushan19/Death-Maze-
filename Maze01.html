@@ -109,7 +109,7 @@
         }
 
         function remakeLevel2Area(){ // Reset level 2 area
-            for(var o = 1; 0 < 22; o++){
+            for(var o = 1; o < 22; o++){
                 for(var p = 1; p < tileRowCount - 1; p++){
                     if(tiles[o][p].state != 'w' && tiles[o][p].state != 'b' && tiles[o][p].state != 'g' && tiles[o][p].state != 'x' && tiles[o][p].state != 'y' && tiles[o][p].state != 'z' && tiles[o][p].state != 't'){
                         tiles[o][p].state = 'e';
@@ -1039,7 +1039,7 @@
                  console.log("Agent D Activated:",AgentDActive);
             }
             else if(tiles[10][2].state == 't' || tiles[10][3].state == 't' || tiles[10][4].state == 't' || tiles[10][6].state == 't' || tiles[10][9].state == 't' || tiles[10][10].state == 't' || tiles[10][11].state == 't'){ // check second level crossed or not
-                // remakeLevel2Area();
+                remakeLevel2Area();
                 agentCGateBrokePart();
                 tiles[15][11].state='e';
                 tiles[16][9].state='e';
@@ -1054,17 +1054,18 @@
             }
             else if (doorLock1Active == true)
             {
-                
                 solveMbyB();
             }
-            if (AgentDActive == true)
+            else if (AgentDActive == true)
             {
                 console.log("Agent D check:",AgentDActive);
+                remakeLevel2Area();
                 solveMbyD();
             }
             else if (AgentCActive == true)
             {
                 console.log("Agent C check:",AgentCActive);
+                remakeLevel2Area();
                 solveMbyC();
             }
             else 
